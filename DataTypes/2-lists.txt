@@ -1,0 +1,36 @@
+# Add items
+lpush jobs "job1"         # [job1]
+lpush jobs "job0"         # [job0, job1]
+rpush jobs "job2"         # [job0, job1, job2]
+
+# View list contents
+lrange jobs 0 -1          # ["job0", "job1", "job2"]
+
+# Get length of list
+llen jobs                 # 3
+
+# Pop from the left (like dequeue from front)
+lpop jobs                 # "job0"
+lrange jobs 0 -1          # ["job1", "job2"]
+
+# Pop from the right
+rpop jobs                 # "job2"
+lrange jobs 0 -1          # ["job1"]
+
+# Blocking pop from the left (waits if list is empty)
+# In one terminal:
+blpop jobs 25              # waits up to 25 seconds if list is empty and executes if any new values is pushed
+
+# In another terminal:
+lpush jobs "delayed-job"
+
+# Move item from one list to another
+lpush queue1 "a" "b" "c"    # [c, b, a]
+lpush queue2 "x" "y"        # [y, x]
+
+# Move 'a' from RIGHT of queue1 to LEFT of queue2
+lmove queue1 queue2 right left
+
+# Check both lists
+lrange queue1 0 -1          # [c, b]
+lrange queue2 0 -1          # ["a", "y", "x"]
