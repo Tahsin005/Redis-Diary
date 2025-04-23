@@ -1,0 +1,39 @@
+del fruits
+
+# Add members
+sadd fruits "apple"
+sadd fruits "banana" "orange" "apple"   # "apple" won't be added again
+
+# View members
+smembers fruits                         # ["apple", "banana", "orange"]
+
+# Set size (cardinality)
+scard fruits                            # 3
+
+# Check membership
+sismember fruits "apple"                # 1 (true)
+sismember fruits "grape"                # 0 (false)
+
+# Remove member
+srem fruits "banana"
+smembers fruits                         # ["apple", "orange"]
+
+# Random member
+srandmember fruits                      # "apple" or "orange"
+
+# Pop (remove + return) random member
+spop fruits                             # "orange"
+smembers fruits                         # ["apple"]
+
+# Set operations
+sadd set1 "a" "b" "c"
+sadd set2 "b" "c" "d"
+
+# Union (all unique elements)
+sunion set1 set2                        # ["a", "b", "c", "d"]
+
+# Intersection (common elements)
+sinter set1 set2                        # ["b", "c"]
+
+# Difference (in set1 but not in set2)
+sdiff set1 set2                         # ["a"]
