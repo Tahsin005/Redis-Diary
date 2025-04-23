@@ -1,0 +1,39 @@
+# basic set and get
+set name "redis"
+get name
+
+# delete a key
+del name
+
+# append to a string
+set greeting "hello"
+append greeting ", world!"
+get greeting
+
+# increment and decrement
+set count 10
+incr count     # 11
+decr count     # 10
+
+# multiple set and get
+mset key1 "value1" key2 "value2"
+mget key1 key2
+
+# check if a key exists
+exists key1
+
+# set with expiration
+setex temp_key 60 "expires in 60 seconds"
+
+# get the length of a string
+set message "hello, redis!"
+strlen message
+
+# getrange - get part of a string
+getrange message 0 4       # "hello"
+getrange message 7 -1      # "redis!"
+
+# setrange - overwrite part of a string
+setrange message 7 "world"
+get message                # "hello, world!"
+
