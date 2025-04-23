@@ -1,0 +1,64 @@
+🍽 Real-Life Example: Food Delivery System
+We’ll simulate:
+- Restaurants placing orders into a system
+- Delivery drivers picking them up
+- The system tracking order progress
+
+
+🧑‍🍳 1. A restaurant places new orders
+
+        xadd food_orders * restaurant_id R123 order_id O987 item "Cheeseburger Combo"
+        xadd food_orders * restaurant_id R456 order_id O988 item "Veggie Pizza"
+
+    Stream name: food_orders
+    *: Redis auto-generates the ID (timestamp)
+    Fields: restaurant_id, order_id, item
+
+
+👥 2. Create a consumer group for delivery drivers
+
+        xgroup create food_orders delivery_team 0 mkstream
+
+    Group name: delivery_team
+    Starting point: 0 = read from beginning
+
+
+🛵 3. A driver (consumer) picks up an order
+
+        xreadgroup group delivery_team driver_anna streams food_orders >
+
+    driver_anna is the consumer name
+    > means: only receive new unclaimed orders
+
+
+🧾 4. Order entry might look like this
+
+    1) 1) "food_orders"
+    2) 1) 1) "1745410753351-0"
+            2) 1) "restaurant_id"
+                2) "R123"
+                3) "order_id"
+                4) "O987"
+                5) "item"
+                6) "Cheeseburger Combo"
+        2) 1) "1745410753353-0"
+            2) 1) "restaurant_id"
+                2) "R456"
+                3) "order_id"
+                4) "O988"
+                5) "item"
+                6) "Veggie Pizza"
+
+
+✅ 5. The driver confirms delivery
+
+        xack food_orders delivery_team 1713902341234-0
+
+    This tells Redis: “Driver Anna delivered this order.”
+
+
+🧾 6. View unacknowledged/pending orders
+
+        xpending food_orders delivery_team
+
+    Lists orders that haven’t been acknowledged (e.g., driver app crashed or delivery failed)
