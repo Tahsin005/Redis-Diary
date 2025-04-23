@@ -62,3 +62,31 @@ We’ll simulate:
         xpending food_orders delivery_team
 
     Lists orders that haven’t been acknowledged (e.g., driver app crashed or delivery failed)
+
+
+🔄 7. Retry a pending delivery
+
+        xclaim food_orders delivery_team driver_bob 0 1713902341234-0
+
+    Re-assign the task to driver_bob
+
+
+🧹 8. Clean up old entries
+
+        xtrim food_orders maxlen 1000
+
+    Keeps the latest 1000 orders, removes the rest
+
+
+
+🗂 Summary of Commands with Real-World Mapping
+
+Redis Command	                       What it does	                     Real-life analogy
+
+XADD	                               Add new stream entry	             Restaurant adds new food order
+XGROUP CREATE	                       Create consumer group	         Set up team of delivery drivers
+XREADGROUP	                           Read entry by consumer	         Driver picks up a new order
+XACK	                               Acknowledge completion	         Driver marks order as delivered
+XPENDING	                           Show pending messages	         Unfinished deliveries
+XCLAIM	                               Take over a pending message	     Another driver retries the delivery
+XTRIM	                               Trim stream size	                 Clean old records to save memory
