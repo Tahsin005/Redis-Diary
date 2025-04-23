@@ -1,0 +1,39 @@
+del user:1
+
+# Set multiple fields
+hset user:1 name "Alice" email "alice@example.com" age "30"
+
+# Get a specific field
+hget user:1 name                      # "Alice"
+
+# Get multiple specified fields
+hmget user:1 name email age
+
+# Get all fields
+hgetall user:1
+
+# Get all field names
+hkeys user:1                          # ["name", "email", "age"]
+
+# Get all values
+hvals user:1                          # ["Alice", "alice@example.com", "30"]
+
+# Set if field doesn't exist
+hsetnx user:1 age "40"                # Won’t overwrite since "age" exists
+
+# Delete one or more fields
+hdel user:1 age
+
+# Count number of fields
+hlen user:1                           # 2
+
+# Check if a field exists
+hexists user:1 name                   # 1
+hexists user:1 age                    # 0
+
+# Increment field (must be a number)
+hincrby user:1 visits 1               # if not exists, creates and sets to 1
+hincrby user:1 visits 5               # now visits = 6
+hincrby user:1 age 22                 # 135
+hincrby user:1 age -35                # 100
+

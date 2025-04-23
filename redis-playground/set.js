@@ -1,6 +1,6 @@
 const client = require('./client');
 
-async function runSetExamples() {
+async function init() {
     await client.del('fruits');
 
     // Add to set
@@ -46,4 +46,4 @@ async function runSetExamples() {
     console.log('Difference:', diff);
 }
 
-runSetExamples();
+init();
