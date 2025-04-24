@@ -2,18 +2,23 @@ Publishers send messages to a channel.
 Subscribers listen for messages on that channel.
 Redis delivers each message to all active subscribers instantly.
 
-subscribe weather_alerts
+    subscribe weather_alerts
 
-publish weather_alerts "🌪️ Tornado warning in Zone 3!"
+    publish weather_alerts "🌪️ Tornado warning in Zone 3!"
 
-Output:
-    1) "message"
-    2) "weather_alerts"
-    3) "🌪️ Tornado warning in Zone 3!"
+    Output:
+        1) "message"
+        2) "weather_alerts"
+        3) "🌪️ Tornado warning in Zone 3!"
 
 
-# Subscribe to multiple channels
-subscribe weather_alerts fire_alerts health_alerts
+    # Subscribe to multiple channels
+    subscribe weather_alerts fire_alerts health_alerts
+
+    publish weather_alerts "🌧️ Heavy rain expected in Downtown"
+    publish fire_alerts "🔥 Fire reported in Sector 7"
+    publish traffic_alerts "🚧 Roadblock at Main Street"
+
 
 
 Command                        Purpose
